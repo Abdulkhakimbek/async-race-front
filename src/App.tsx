@@ -1,13 +1,15 @@
 import 'src/global.css';
 
-import React from 'react';
 import Router from 'src/routes';
 import { MotionLazy } from 'src/components/animate/motion-lazy';
+import { SnackbarProvider } from './components/snackbar';
 
 export default function App() {
   return (
     <MotionLazy>
-      <Router />
+      <SnackbarProvider>
+        <Router />
+      </SnackbarProvider>
     </MotionLazy>
   );
 }

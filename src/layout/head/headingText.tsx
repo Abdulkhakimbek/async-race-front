@@ -15,7 +15,7 @@ export default function HeadingText() {
                     <ArrowLine width='75%' />
                 </Box>
 
-                <GradientText />
+                <GradientText variant="h1">ASYNC RACE</GradientText>
 
                 <Box
                     display={'flex'}

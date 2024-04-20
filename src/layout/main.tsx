@@ -13,8 +13,7 @@ export default function MainLayout({ children }: Props) {
 
     return (
         <Box sx={{
-            height: '100vh',
-            backgroundImage: `url(/main-layout-background.jpg)`,
+
             padding: '2% 5% 4% 5%',
         }}>
             <Stack
@@ -23,7 +22,7 @@ export default function MainLayout({ children }: Props) {
                 gap={'40px'}
                 sx={{
                     flexGrow: 1,
-                    border: '1px solid white',
+                    // border: '1px solid white',
                 }}
             >
                 <Header />

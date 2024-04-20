@@ -2,14 +2,11 @@ import Box from '@mui/material/Box';
 import { Stack } from '@mui/system';
 import { Button } from "@mui/material";
 import HeadingText from './headingText';
-
-
+import { RouterLink } from 'src/routes/components';
 
 type Props = {
     children: React.ReactNode;
 };
-
-
 
 export default function Header() {
 
@@ -23,6 +20,7 @@ export default function Header() {
                     maxWidth={'140px'}
                 >
                     <Button
+                        component={RouterLink}
                         size={'large'}
                         href={'/garage'}
                         variant="outlined"
@@ -30,6 +28,7 @@ export default function Header() {
                         Garage
                     </Button>
                     <Button
+                        component={RouterLink}
                         size={'large'}
                         href={'/winners'}
                         variant="outlined"

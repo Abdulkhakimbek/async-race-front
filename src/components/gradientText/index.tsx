@@ -4,10 +4,14 @@ import { varFade } from 'src/components/animate';
 import { textGradient } from 'src/theme/css';
 import { styled } from '@mui/material/styles';
 
+type Props = {
+    children: React.ReactNode;
+    variant: 'h1' | 'h4' | 'h5';
+}
 
-export default function GradientText() {
+export default function GradientText({ children, variant }: Props) {
 
-    const StyledTextGradient = styled(m.h1)(({ theme }) => ({
+    const StyledTextGradient = styled(m[variant] || m.h1)(({ theme }) => ({
         ...textGradient(
             `300deg, ${theme.palette.primary.main} 0%, ${theme.palette.warning.main} 25%, ${theme.palette.primary.main} 50%, ${theme.palette.warning.main} 75%, ${theme.palette.primary.main} 100%`
         ),
@@ -38,7 +42,7 @@ export default function GradientText() {
                             repeat: Infinity,
                         }}
                     >
-                        ASYNC RACE
+                        {children}
                     </StyledTextGradient>
                 </m.div>
             </Box>

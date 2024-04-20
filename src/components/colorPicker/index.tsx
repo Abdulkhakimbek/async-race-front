@@ -2,22 +2,35 @@ import { useState } from "react";
 import { Box, ClickAwayListener, ToggleButton } from "@mui/material";
 import { ChromePicker } from "react-color";
 
-export default function ColorPicker() {
-    const [color, setColor] = useState('#ffffff')
+interface Car {
+    name: string;
+    color: string;
+}
+
+type Props = {
+    setCar: any;
+    car: Car;
+}
+
+export default function ColorPicker({ setCar, car }: Props) {
     const [active, setActive] = useState(false)
+
+    const handleColor = (color: string) => {
+        setCar((prev: Car) => ({ ...prev, color: color }))
+    }
 
     return (
         <>
             <ClickAwayListener onClickAway={() => setActive(false)}>
                 <Box position={'relative'} >
                     <ToggleButton
-                        value={color}
+                        value={car?.color}
                         onClick={() => setActive(true)}
                         sx={{
-                            backgroundColor: color,
+                            backgroundColor: car?.color,
                             border: '1px solid white',
                             "&:hover": {
-                                backgroundColor: color,
+                                backgroundColor: car?.color,
                                 border: '1px solid white'
                             }
                         }}
@@ -32,11 +45,10 @@ export default function ColorPicker() {
                         }}
                     >
                         {active && <ChromePicker
-                            color={color}
-                            onChange={(e) => setColor(e.hex)}
-                            onChangeComplete={(e) => setColor(e.hex)}
+                            color={car?.color}
+                            onChange={(e) => handleColor(e?.hex)}
+                            onChangeComplete={(e) => handleColor(e?.hex)}
                         />}
-
                     </Box>
                 </Box>
             </ClickAwayListener>
