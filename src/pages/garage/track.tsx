@@ -2,7 +2,7 @@ import { Box, Stack, Typography } from "@mui/material";
 import Iconify from "src/components/iconify";
 import { ICarItem } from "src/types/car";
 import TrackAction from "./track-action-panel";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 type Props = {
     car: ICarItem;
@@ -10,12 +10,16 @@ type Props = {
 
 export default function Track({ car }: Props) {
     const [moveCar, setMoveCar] = useState(false);
+    const carRef = useRef<HTMLDivElement>(null)
     let baseVelocity = car?.velocity || 0;
-    const animationDuration = car?.velocity ? `${baseVelocity / 10}s` : `${baseVelocity}s`;
+    const animationDuration = car?.velocity ? `${1000 / baseVelocity}s` : `${baseVelocity}s`;
 
     if ('drive' in car && car.drive === false) {
         baseVelocity = 0;
     }
+    useEffect(() => {
+        console.log('carRef>>>', carRef.current?.style.left, car);
+    }, [carRef?.current, car])
 
     useEffect(() => {
         if (car?.velocity) {
@@ -42,6 +46,7 @@ export default function Track({ car }: Props) {
             >
                 <TrackAction car={car} />
                 <Box
+                    ref={carRef}
                     sx={{
                         position: 'absolute',
                         width: '100%',

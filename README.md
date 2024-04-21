@@ -1,46 +1,96 @@
-# Getting Started with Create React App
+## Checklist
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- [ ] **Calculated Score:** 
 
-## Available Scripts
+- [ ] **The link:** 
 
-In the project directory, you can run:
+## 🚀 UI Deployment
 
-### `npm start`
+- [ ] **Deployment Platform:** 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## ✅ Requirements to Commits and Repository
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- [ ] **Commit guidelines compliance:** 
 
-### `npm test`
+- [ ] **Checklist included in README.md:** 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- [ ] **Score calculation:** 
 
-### `npm run build`
+- [ ] **UI Deployment link in README.md**: 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🏁 Basic Structure (85 points)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 1. View Configuration (30 points)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- [ ] **Two Views (10 points):** 
+- [ ] **Garage View Content (5 points):** 
+- [ ] **Winners View Content (5 points):** 
+- [ ] **Persistent State (10 points):** 
 
-### `npm run eject`
+### 2. Garage View Functionality (55 points)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+#### Car Management (45 points)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- [ ] **CRUD Operations (20 points):** 
+- [ ] **Color Selection (10 points):** 
+- [ ] **Management Buttons (5 points):** 
+- [ ] **Pagination (10 points):** 
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+#### Car Generation (10 points)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- [ ] **Random Car Creation (10 points):** 
 
-## Learn More
+## 🚗 Car Animation (50 points)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- [ ] **Engine Control Buttons (10 points):** 
+- [ ] **Start Engine Animation (20 points):** 
+- [ ] **Stop Engine Animation (10 points):** 
+- [ ] **Button States (5 points):** 
+- [ ] **Responsive Animation (5 points):** 
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 🏎️ Race Animation (35 points)
+
+- [ ] **Start Race Button (15 points):** 
+- [ ] **Reset Race Button (10 points):** 
+- [ ] **Winner Announcement (10 points):** 
+
+## 🏆 Winners View (45 points)
+
+- [ ] **Display Winners (15 points):** 
+- [ ] **Pagination for Winners (10 points):** 
+- [ ] **Winners Table (10 points):** 
+- [ ] **Sorting Functionality (10 points):**
+
+## 🏗️ Application Architecture (40 points)
+
+- [ ] **Modular Design (40 points):** 
+
+## 📜 Dynamic Content Generation (30 points)
+
+- [ ] **JavaScript-Generated HTML Content (30 points):**
+
+## 🌐 Single Page Application (25 points)
+
+- [ ] **SPA Implementation (25 points):** 
+
+## 📦 Bundling and Tooling (20 points)
+
+- [ ] **Use of Webpack or Similar (20 points):**
+
+## ✅ Code Quality and Standards (15 points)
+
+- [ ] **Eslint with Airbnb Style Guide (15 points):** 
+
+## 📏 Code Organization and Efficiency (15 points)
+
+- [ ] **Function Modularization (10 points):** 
+- [ ] **Code Duplication and Magic Numbers (5 points):** 
+
+## 🎨 Prettier and ESLint Configuration (10 points)
+
+- [ ] **Prettier Setup (5 points):** 
+- [ ] **ESLint Configuration (5 points):** 
+
+## 🌟 Overall Code Quality (35 points)
+
+- [ ] **(Up to 35 points)** Discretionary points awarded by the reviewer based on overall code quality, readability

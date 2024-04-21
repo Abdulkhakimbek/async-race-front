@@ -64,11 +64,12 @@ export function GarageStateProvider({ children, defaultSettings }: GarageProvide
         const driveResponses = await Promise.all(drivePromises);
 
         const updatedCarsMode = cars.map((car, index) => {
-          const { status: driveStatus } = driveResponses[index].data;
+          const { success: driveStatus } = driveResponses[index].data;
+
           return {
             ...car,
-            velocity: updatedCars[index].velocity,
-            drive: (driveStatus >= 200 && driveStatus < 300) ? true : false
+            velocity: driveStatus ? updatedCars[index].velocity : 0,
+            drive: driveStatus
           };
         });
 
