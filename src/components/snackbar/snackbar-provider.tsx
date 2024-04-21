@@ -14,8 +14,6 @@ type Props = {
 };
 
 export default function SnackbarProvider({ children }: Props) {
-
-
   const isRTL = true;
 
   const notistackRef = useRef<any>(null);

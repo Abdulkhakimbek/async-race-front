@@ -4,11 +4,7 @@ type Props = {
   isRTL?: boolean;
 };
 
-export function RightIcon({
-  isRTL,
-  ...rest
-}: Props) {
-
+export function RightIcon({ isRTL, ...rest }: Props) {
   return (
     <Iconify
       width="auto"

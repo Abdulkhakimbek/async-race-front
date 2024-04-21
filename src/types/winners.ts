@@ -1,5 +1,5 @@
 export type IWinnerItem = {
-    id: number;
-    wins: number;
-    time: number;
+  id: number;
+  wins: number;
+  time: number;
 };

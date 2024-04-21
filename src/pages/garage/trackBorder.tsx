@@ -1,23 +1,18 @@
-import { Stack } from "@mui/material";
-import ArrowLine from "src/components/arrrowLine";
+import { Stack } from '@mui/material';
+import ArrowLine from 'src/components/arrrowLine';
 
 type Props = {
-    children?: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 export default function TrackBorder({ children }: Props) {
-    return (
-        <>
-            <ArrowLine width='100%' hasBorder />
-            <Stack
-                direction={'column'}
-                padding={'0px 0px'}
-                minWidth={'1350px'}
-                overflow={'hidden'}
-            >
-                {children}
-            </Stack>
-            <ArrowLine width='100%' hasBorder />
-        </>
-    )
+  return (
+    <>
+      <ArrowLine width="100%" hasBorder />
+      <Stack direction="column" padding="0px 0px" minWidth="1350px" overflow="hidden">
+        {children}
+      </Stack>
+      <ArrowLine width="100%" hasBorder />
+    </>
+  );
 }

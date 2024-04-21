@@ -8,7 +8,7 @@ const axiosInstance = axios.create({ baseURL: HOST_API });
 
 axiosInstance.interceptors.response.use(
   (res) => res,
-  (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong')
+  (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong'),
 );
 
 export default axiosInstance;
@@ -36,10 +36,10 @@ export const poster = async (args: string | [string, any]) => {
 export const endpoints = {
   car: {
     list: '/garage',
-    details: '/garage'
+    details: '/garage',
   },
   winners: {
     list: '/winners',
-    details: '/winners'//by /winners/:id
+    details: '/winners', // by /winners/:id
   },
 };
