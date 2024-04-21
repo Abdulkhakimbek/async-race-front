@@ -2,7 +2,7 @@
 
 - [ ] **Calculated Score:** 
 
-- [ ] **The link:** 
+- [ ] **The link:https://heartfelt-licorice-e27ef6.netlify.app/** 
 
 ## 🚀 UI Deployment
 
