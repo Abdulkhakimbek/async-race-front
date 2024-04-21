@@ -27,50 +27,65 @@ export function GarageStateProvider({ children, defaultSettings }: GarageProvide
     update('totalCount', response.headers['x-total-count']);
   }, [currentPage, _limit, needToUpdate])
 
-  const manageEngine = useCallback(async (id: string | number, status: 'started' | 'stopped') => {
+  const manageEngine = useCallback(async (cars: ICarItem[], status: 'started' | 'stopped') => {
     try {
-      const response = await axiosInstance.patch(`/engine`, {}, { params: { id: id, status } });
-      console.log('response manageEngine 1', response);
-      if (response?.status >= 200 && response?.status < 300) {
-        const { velocity } = response.data;
+      const enginePromises = cars.map(async (car) => {
+        const response = await axiosInstance.patch(`/engine`, {}, { params: { id: car.id, status } });
+        console.log('response manageEngine 1', response);
+        return response;
+      });
 
-        const updatedCars = cars.map((car: ICarItem) => {
-          if (car.id == id) {
-            return { ...car, velocity };
-          }
-          return car;
-        });
+      const engineResponses = await Promise.all(enginePromises);
+
+      const updatedCars = cars.map((car, index) => {
+        const { velocity } = engineResponses[index].data;
+        return { ...car, velocity };
+      });
+
+      if (state?.cars?.length === updatedCars?.length) {
         update('cars', updatedCars);
+      } else {
+        const totalList = state?.cars?.map((car: ICarItem) => {
+          const found = updatedCars?.find((_) => _?.id === car?.id)
+          console.log('found>>>>>', found);
 
-        if (status === 'started') {
-          try {
-            const driveRes = await axiosInstance.patch(`/engine`, {}, { params: { id: id, status: 'drive' } });
-            console.log('response manageEngine started', driveRes);
-
-            const updatedCarsMode = cars.map((car: ICarItem) => {
-              if (car.id == id) {
-                return {
-                  ...car,
-                  velocity,
-                  drive: (response?.status >= 200 && response?.status < 300) ? true : false
-                };
-              }
-              return car;
-            });
-
-            update('cars', updatedCarsMode);
-          } catch (error) {
-            console.log('error at driveRes', error);
-          }
-
-        }
+          return found ? found : car;
+        })
+        update('cars', totalList);
       }
 
-    } catch (error) {
-      console.log('error at response1:', error)
+      if (status === 'started') {
+        const drivePromises = cars.map(async (car) => {
+          const driveRes = await axiosInstance.patch(`/engine`, {}, { params: { id: car.id, status: 'drive' } });
+          console.log('response manageEngine started', driveRes);
+          return driveRes;
+        });
 
+        const driveResponses = await Promise.all(drivePromises);
+
+        const updatedCarsMode = cars.map((car, index) => {
+          const { status: driveStatus } = driveResponses[index].data;
+          return {
+            ...car,
+            velocity: updatedCars[index].velocity,
+            drive: (driveStatus >= 200 && driveStatus < 300) ? true : false
+          };
+        });
+
+        if (state?.cars?.length === updatedCarsMode?.length) {
+          update('cars', updatedCarsMode);
+        } else {
+          const totalList = state?.cars?.map((car: ICarItem) => {
+            const found = updatedCarsMode?.find((_) => _?.id === car?.id)
+            return found ? found : car;
+          })
+          update('cars', totalList);
+        }
+      }
+    } catch (error) {
+      console.log('error at response1:', error);
     }
-  }, [cars, update])
+  }, [cars, update]);
 
   const nextPage = () => {
     update('currentPage', currentPage + 1)

@@ -34,14 +34,14 @@ export default function TrackAction({ car }: Props) {
                         variant="outlined"
                         color="info"
                         disabled={!!car?.velocity}
-                        onClick={() => car.id && manageEngine(car.id, 'started')}
+                        onClick={() => car.id && manageEngine([car], 'started')}
 
                     >A</Button>
                     <Button
                         variant="outlined"
                         color="warning"
                         disabled={(!car?.drive && !car?.velocity)}
-                        onClick={() => car.id && manageEngine(car.id, 'stopped')}
+                        onClick={() => car.id && manageEngine([car], 'stopped')}
                     >B</Button>
                 </Stack>
             </Stack>

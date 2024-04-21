@@ -5,7 +5,16 @@ import RandomCarGenerator from "./randomCarGenerateBtn";
 import { useGarageContext } from "./context";
 
 export default function GarageActionPanel() {
-    const { reset } = useGarageContext();
+    const { cars, manageEngine } = useGarageContext();
+
+    const startRace = () => {
+        manageEngine(cars, 'started');
+    }
+
+    const stopRace = () => {
+        manageEngine(cars, 'stopped');
+    }
+
     return (
         <>
             <Stack direction={'row'} justifyContent={'space-between'}>
@@ -14,13 +23,14 @@ export default function GarageActionPanel() {
                         variant="outlined"
                         color="success"
                         endIcon={<Iconify icon="uil:play" />}
+                        onClick={startRace}
                     >Race</Button>
 
                     <Button
                         variant="outlined"
                         color="warning"
                         endIcon={<Iconify icon="system-uicons:reset" />}
-                        onClick={reset}
+                        onClick={stopRace}
                     >Reset</Button>
                 </Stack>
 
