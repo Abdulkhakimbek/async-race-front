@@ -10,12 +10,8 @@ type Props = {
 }
 
 export default function TrackAction({ car }: Props) {
-    const { onSelectCar, onDeleteCar } = useGarageContext()
-
-    const handleStart = async (status: string) => {
-        const response: AxiosResponse<any, ICarItem> = await axiosInstance.patch(`/engine`, { params: { id: car?.id, status: status } });
-    }
-
+    const { onSelectCar, onDeleteCar, manageEngine } = useGarageContext()
+    console.log('Track com', car);
     return (
         <>
             <Stack direction={'row'} spacing={1}>
@@ -37,12 +33,15 @@ export default function TrackAction({ car }: Props) {
                     <Button
                         variant="outlined"
                         color="info"
-                        onClick={() => handleStart('started')}
+                        disabled={!!car?.velocity}
+                        onClick={() => car.id && manageEngine(car.id, 'started')}
+
                     >A</Button>
                     <Button
                         variant="outlined"
                         color="warning"
-                        onClick={() => handleStart('stopped')}
+                        disabled={(!car?.drive && !car?.velocity)}
+                        onClick={() => car.id && manageEngine(car.id, 'stopped')}
                     >B</Button>
                 </Stack>
             </Stack>

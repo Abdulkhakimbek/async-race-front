@@ -2,16 +2,28 @@ import { Box, Stack, Typography } from "@mui/material";
 import Iconify from "src/components/iconify";
 import { ICarItem } from "src/types/car";
 import TrackAction from "./track-action-panel";
+import { useEffect, useState } from "react";
 
 type Props = {
     car: ICarItem;
 }
 
 export default function Track({ car }: Props) {
+    const [moveCar, setMoveCar] = useState(false);
+    let baseVelocity = car?.velocity || 0;
+    const animationDuration = car?.velocity ? `${baseVelocity / 10}s` : `${baseVelocity}s`;
 
-    const baseDuration = 0;
-    const animationDuration = car.speed ? `${baseDuration / car.speed}s` : `${baseDuration}s`;
+    if ('drive' in car && car.drive === false) {
+        baseVelocity = 0;
+    }
 
+    useEffect(() => {
+        if (car?.velocity) {
+            setMoveCar(true)
+        } else {
+            setMoveCar(false)
+        }
+    }, [car])
 
     return (
         <>
@@ -33,10 +45,10 @@ export default function Track({ car }: Props) {
                     sx={{
                         position: 'absolute',
                         width: '100%',
-                        left: '12%',
+                        left: moveCar ? '95%' : '12%',
                         top: '15%',
-                        zIndex: '1',
-                        animation: `moveCar ${animationDuration} linear infinite`, // Apply the animation here
+                        zIndex: '10',
+                        transition: `left ${animationDuration} linear`
                     }}
                 >
                     <Iconify
@@ -55,7 +67,7 @@ export default function Track({ car }: Props) {
                         left: '17%',
                         top: '0%',
                         zIndex: '1',
-                        borderLeft: '2px dashed #ed6c02',
+                        borderLeft: '2px dashed #ed6c02',//start line
                         height: '100%',
                         paddingLeft: '10px',
                         display: 'flex',
@@ -80,7 +92,7 @@ export default function Track({ car }: Props) {
                         right: '4%',
                         top: '0%',
                         zIndex: '1',
-                        borderLeft: '2px dashed #2e7d32',
+                        borderLeft: '2px dashed #2e7d32',//finish line
                         height: '100%',
                         paddingLeft: '10px',
                         display: 'flex',
@@ -88,7 +100,6 @@ export default function Track({ car }: Props) {
                         alignItems: 'center',
                     }}
                 >
-
                 </Box>
             </Box>
         </>

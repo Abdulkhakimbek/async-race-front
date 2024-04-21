@@ -25,9 +25,52 @@ export function GarageStateProvider({ children, defaultSettings }: GarageProvide
     const response = await axiosInstance.get('/garage', { params: { _page: currentPage, _limit } });
     update('cars', response.data);
     update('totalCount', response.headers['x-total-count']);
-    console.log('cars', cars);
-
   }, [currentPage, _limit, needToUpdate])
+
+  const manageEngine = useCallback(async (id: string | number, status: 'started' | 'stopped') => {
+    try {
+      const response = await axiosInstance.patch(`/engine`, {}, { params: { id: id, status } });
+      console.log('response manageEngine 1', response);
+      if (response?.status >= 200 && response?.status < 300) {
+        const { velocity } = response.data;
+
+        const updatedCars = cars.map((car: ICarItem) => {
+          if (car.id == id) {
+            return { ...car, velocity };
+          }
+          return car;
+        });
+        update('cars', updatedCars);
+
+        if (status === 'started') {
+          try {
+            const driveRes = await axiosInstance.patch(`/engine`, {}, { params: { id: id, status: 'drive' } });
+            console.log('response manageEngine started', driveRes);
+
+            const updatedCarsMode = cars.map((car: ICarItem) => {
+              if (car.id == id) {
+                return {
+                  ...car,
+                  velocity,
+                  drive: (response?.status >= 200 && response?.status < 300) ? true : false
+                };
+              }
+              return car;
+            });
+
+            update('cars', updatedCarsMode);
+          } catch (error) {
+            console.log('error at driveRes', error);
+          }
+
+        }
+      }
+
+    } catch (error) {
+      console.log('error at response1:', error)
+
+    }
+  }, [cars, update])
 
   const nextPage = () => {
     update('currentPage', currentPage + 1)
@@ -39,7 +82,13 @@ export function GarageStateProvider({ children, defaultSettings }: GarageProvide
 
   const onCreateCar = useCallback(async (car: ICarItem) => {
     const response: AxiosResponse<any, ICarItem> = await axiosInstance.post('/garage', car);
-    enqueueSnackbar('Car created successfully', { variant: 'success' });
+    if (response?.status >= 200 && response?.status < 300) {
+      enqueueSnackbar(response?.statusText || 'Car created successfully', { variant: 'success' });
+    } else {
+      enqueueSnackbar(response?.statusText || 'Car not created', { variant: 'error' });
+    }
+    reset();
+    update('needToUpdate', true);
   }, []);
 
   const onSelectCar = useCallback((car: ICarItem) => {
@@ -48,15 +97,25 @@ export function GarageStateProvider({ children, defaultSettings }: GarageProvide
 
   const onUpdateCar = useCallback(async (car: ICarItem) => {
     const response: AxiosResponse<any, ICarItem> = await axiosInstance.put(`/garage/${car?.id}`, car);
-    enqueueSnackbar('Car updated successfully', { variant: 'success' });
+    if (response?.status >= 200 && response?.status < 300) {
+      enqueueSnackbar(response?.statusText || 'Car updated successfully', { variant: 'success' });
+    } else {
+      enqueueSnackbar(response?.statusText || 'Car not updated', { variant: 'error' });
+    }
     reset();
     update('needToUpdate', true);
   }, []);
 
   const onDeleteCar = useCallback(async (id: string | number) => {
     const response: AxiosResponse<any, string | number> = await axiosInstance.delete(`/garage/${id}`);
-    if (response?.status === 200) enqueueSnackbar('Delete success!');
-    if (response?.status >= 400) enqueueSnackbar('Not deleted');
+
+    if (response?.status >= 200 && response?.status < 300) {
+      enqueueSnackbar(response?.statusText || 'Car deleted successfully', { variant: 'success' });
+    } else {
+      enqueueSnackbar(response?.statusText || 'Car not deleted', { variant: 'error' });
+    }
+    reset();
+    update('needToUpdate', true);
   }, []);
 
   useEffect(() => {
@@ -74,6 +133,7 @@ export function GarageStateProvider({ children, defaultSettings }: GarageProvide
       onDeleteCar,
       nextPage,
       prevPage,
+      manageEngine
     }),
     [
       reset,
@@ -83,6 +143,7 @@ export function GarageStateProvider({ children, defaultSettings }: GarageProvide
       onUpdateCar,
       onCreateCar,
       onDeleteCar,
+      manageEngine
     ]
   );
 

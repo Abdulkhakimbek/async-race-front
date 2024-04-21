@@ -20,5 +20,6 @@ export type GarageContextProps = GarageValueProps & {
     update: (key: string, value: any) => void;
     nextPage: () => void;
     prevPage: () => void;
+    manageEngine: (id: string | number, status: 'started' | 'stopped') => void;
 };
 
