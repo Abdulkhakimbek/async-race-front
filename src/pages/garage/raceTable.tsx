@@ -29,7 +29,7 @@ export default function RaceTable() {
   const {
     nextPage, prevPage, currentPage, _limit, cars, totalCount,
   } = useGarageContext();
-
+  console.log('cars>>>', cars)
   return (
     <>
       <Stack direction="column">

@@ -1,5 +1,5 @@
 import {
-  useMemo, useState, useEffect, useCallback,
+  useMemo, useEffect, useCallback,
 } from 'react';
 
 import { useLocalStorage } from 'src/hooks/use-local-storage';
@@ -74,15 +74,22 @@ export function GarageStateProvider({ children, defaultSettings }: GarageProvide
             return driveRes;
           });
 
-          const driveResponses = await Promise.all(drivePromises);
+          const driveResponses = await Promise.allSettled(drivePromises);
 
           const updatedCarsMode = cars.map((car, index) => {
-            const { success: driveStatus } = driveResponses[index].data;
-
+            if (driveResponses[index].status === 'fulfilled') {
+              const { success: driveStatus } = (driveResponses[index] as PromiseFulfilledResult<AxiosResponse<any, any>>).value.data;
+              return {
+                ...car,
+                velocity: driveStatus ? updatedCars[index].velocity : 0,
+                drive: driveStatus,
+              };
+            }
+            console.error(`Failed to set drive mode for car ${car.id}:`, driveResponses[index]);
             return {
               ...car,
-              velocity: driveStatus ? updatedCars[index].velocity : 0,
-              drive: driveStatus,
+              velocity: 0.001,
+              drive: false,
             };
           });
 
