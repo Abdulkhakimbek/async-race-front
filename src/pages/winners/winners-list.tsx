@@ -46,7 +46,7 @@ export default function WinnersList() {
             <TableRow>
               <StyledTableCell align="left">No</StyledTableCell>
               <StyledTableCell align="left">CAR</StyledTableCell>
-              {/* <StyledTableCell align="left">NAME</StyledTableCell> */}
+              <StyledTableCell align="left">NAME</StyledTableCell>
               <StyledTableCell align="left">WINS</StyledTableCell>
               <StyledTableCell align="left">BEST TIME (SECONDS)</StyledTableCell>
             </TableRow>
@@ -66,9 +66,9 @@ export default function WinnersList() {
                     icon="game-icons:race-car"
                   />
                 </StyledTableCell>
+                <StyledTableCell align="left">{row?.name ?? ''}</StyledTableCell>
                 <StyledTableCell align="left">{row.wins}</StyledTableCell>
                 <StyledTableCell align="left">{row.time?.toFixed(2)}</StyledTableCell>
-                {/* <StyledTableCell align="left">{row.wins}</StyledTableCell> */}
               </StyledTableRow>
             ))}
           </TableBody>

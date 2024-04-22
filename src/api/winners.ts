@@ -14,6 +14,7 @@ export const createWinner = async (data: IWinnerItem) => {
   const winner = res.data.length > 0 ? res.data[0] : null;
   if (winner && winner.id === data.id) {
     const body = {
+      name: data.name,
       id: data.id,
       wins: winner.wins + 1,
       time: Math.min(!data.time ? 10 : data.time, !winner.time ? 10 : winner.time),
@@ -22,7 +23,12 @@ export const createWinner = async (data: IWinnerItem) => {
     const resData = await axiosInstance.put(url, body);
     return resData;
   } else {
-    const body = { id: data.id, wins: 1, time: 1000 / (data.velocity ?? 100) };
+    const body = {
+      id: data.id,
+      name: data.name,
+      wins: 1,
+      time: 1000 / (data.velocity ?? 100)
+    };
     const resData = await axiosInstance.post(endpoints.winners.list, body);
     return resData;
   }
