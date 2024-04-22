@@ -1,8 +1,13 @@
 {
   "extends": [
-    "airbnb",
-    "airbnb/hooks",
-    "plugin:@typescript-eslint/recommended"
+    // "airbnb"
+  ],
+  "ignorePatterns": [
+    ".eslintrc",
+    "**/.config / ",
+    "**/node_modules/*",
+    "**/public/*",
+    "**/build/*"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {

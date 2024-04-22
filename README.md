@@ -1,6 +1,6 @@
 ## Score calculation
 
-- ✅ **Calculated Score: 355 points **
+- ✅ **Calculated Score: 350 points **
 
 ## UI Deployment link
 
@@ -64,7 +64,7 @@
 
 ## ✅ Code Quality and Standards (5 points)
 
-- ✅ **Eslint with Airbnb Style Guide (5 points):**
+- - **Eslint with Airbnb Style Guide (5 points):**
 
 ## 📏 Code Organization and Efficiency (15 points)
 

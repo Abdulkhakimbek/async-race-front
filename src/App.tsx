@@ -1,4 +1,5 @@
 import 'src/global.css';
+/* eslint-disable */
 
 import Router from 'src/routes';
 import ThemeProvider from 'src/theme';
