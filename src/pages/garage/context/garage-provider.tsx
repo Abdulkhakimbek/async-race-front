@@ -21,7 +21,11 @@ type GarageProviderProps = {
 export function GarageStateProvider({ children, defaultValues }: GarageProviderProps) {
   const { state, update, reset } = useLocalStorage(STORAGE_KEY, defaultValues);
   const {
-    currentPage, _limit, cars, needToUpdate,
+    currentPage,
+    _limit,
+    cars,
+    needToUpdate,
+    totalCount,
   } = state;
   const { enqueueSnackbar } = useSnackbar();
 
@@ -103,9 +107,11 @@ export function GarageStateProvider({ children, defaultValues }: GarageProviderP
     } else {
       enqueueSnackbar(response?.statusText || 'Car not created', { variant: 'error' });
     }
-    reset();
+    console.log('totalCount', totalCount, _limit, Math.ceil(totalCount / _limit ?? 1));
+
+    update('currentPage', Math.ceil((Number(totalCount) + 1) / _limit ?? 1));
     update('needToUpdate', !needToUpdate);
-  }, []);
+  }, [totalCount, _limit, currentPage, needToUpdate]);
 
   const onSelectCar = useCallback((car: ICarItem) => {
     update('selectedCar', car);
@@ -121,9 +127,8 @@ export function GarageStateProvider({ children, defaultValues }: GarageProviderP
     } else {
       enqueueSnackbar(response?.statusText || 'Car not updated', { variant: 'error' });
     }
-    reset();
     update('needToUpdate', !needToUpdate);
-  }, []);
+  }, [needToUpdate]);
 
   const onDeleteCar = useCallback(async (id: string | number) => {
     const response: AxiosResponse<any, string | number> = await axiosInstance.delete(
@@ -135,9 +140,8 @@ export function GarageStateProvider({ children, defaultValues }: GarageProviderP
     } else {
       enqueueSnackbar(response?.statusText || 'Car not deleted', { variant: 'error' });
     }
-    reset();
     update('needToUpdate', !needToUpdate);
-  }, []);
+  }, [needToUpdate]);
 
   useEffect(() => {
     getCars();
