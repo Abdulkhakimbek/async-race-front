@@ -6,7 +6,7 @@ import { styled } from '@mui/material/styles';
 
 type Props = {
   children: React.ReactNode;
-  variant: 'h1' | 'h4' | 'h5';
+  variant: 'h1' | 'h4' | 'h5' | 'h6' | 'p';
 };
 
 export default function GradientText({ children, variant }: Props) {

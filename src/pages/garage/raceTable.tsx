@@ -23,13 +23,26 @@ const style = {
 };
 
 export default function RaceTable() {
-  const [open, setOpen] = useState(true);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [open, setOpen] = useState(false);
   const {
-    nextPage, prevPage, currentPage, _limit, cars, totalCount,
+    nextPage,
+    prevPage,
+    currentPage,
+    _limit, cars,
+    totalCount,
+    winner,
+    update
   } = useGarageContext();
-  console.log('cars>>>', cars)
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => { setOpen(false); update('winner', null) };
+
+  useEffect(() => {
+    if (winner !== null) {
+      handleOpen();
+    }
+  }, [winner]);
+
   return (
     <>
       <Stack direction="column">
@@ -65,10 +78,11 @@ export default function RaceTable() {
       >
         <Box sx={style}>
           <GradientText variant="h5">WINNER</GradientText>
-
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
+          {winner && <Stack>
+            <GradientText variant="p">{`${winner.name}`}</GradientText>
+            <Typography>{`Wins: ${winner.wins}`}</Typography>
+            <Typography>{`Time: ${winner.time}`}</Typography>
+          </Stack>}
         </Box>
       </Modal>
     </>

@@ -11,7 +11,7 @@ type Props = {
 
 export default function TrackAction({ car }: Props) {
   const { onSelectCar, onDeleteCar, manageEngine } = useGarageContext();
-  console.log('Track com', car);
+
   return (
     <Stack direction="row" spacing={1}>
       <Stack direction="column" spacing={1}>

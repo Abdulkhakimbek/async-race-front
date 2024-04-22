@@ -1,4 +1,5 @@
 import { ICarItem } from './car';
+import { IWinnerItem } from './winners';
 
 export type GarageValueProps = {
   currentPage: number;
@@ -9,6 +10,7 @@ export type GarageValueProps = {
   selectedCar: ICarItem | null;
   _limit: number;
   needToUpdate: boolean;
+  winner: IWinnerItem | null;
 };
 
 export type GarageContextProps = GarageValueProps & {

@@ -1,9 +1,31 @@
 import useSWR from 'swr';
 import { useMemo } from 'react';
 
-import { fetcher, poster, endpoints } from 'src/utils/axios';
+import axiosInstance, { fetcher, poster, updater, endpoints } from 'src/utils/axios';
 
 import { IWinnerItem } from 'src/types/winners';
+
+// ----------------------------------------------------------------------
+
+export const createWinner = async (data: IWinnerItem) => {
+  let res = await axiosInstance.get(`${endpoints.winners.list}?id=${data.id}`);
+
+  let winner = res.data.length > 0 ? res.data[0] : null;
+  if (winner && winner.id === data.id) {
+    data = {
+      id: data.id,
+      wins: winner.wins + 1,
+      time: Math.min(data.time, winner.time)
+    }
+    const url = `${endpoints.winners.list}/${data.id}`;
+    const resData = await axiosInstance.put(url, data);
+    return resData;
+  } else {
+    data = { id: data.id, wins: 1, time: data.time }
+    const resData = await axiosInstance.post(endpoints.winners.list, data);
+    return resData;
+  }
+}
 
 // ----------------------------------------------------------------------
 
@@ -33,7 +55,7 @@ export function useGetWinners(_page: number, _limit: number) {
 
 // ----------------------------------------------------------------------
 
-export function useGetWinner(id: string) {
+export function useGetWinner(id: string | number) {
   const URL = id ? [endpoints.winners.details, { params: { id } }] : '';
 
   const {

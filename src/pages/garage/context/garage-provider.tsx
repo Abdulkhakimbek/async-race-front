@@ -10,6 +10,7 @@ import axiosInstance from 'src/utils/axios';
 import { AxiosResponse } from 'axios';
 import { useSnackbar } from 'src/components/snackbar';
 import { GarageContext } from './garage-context';
+import { createWinner } from 'src/api/winners';
 
 const STORAGE_KEY = 'garage';
 
@@ -40,7 +41,6 @@ export function GarageStateProvider({ children, defaultSettings }: GarageProvide
             {},
             { params: { id: car.id, status } },
           );
-          console.log('response manageEngine 1', response);
           return response;
         });
 
@@ -56,7 +56,6 @@ export function GarageStateProvider({ children, defaultSettings }: GarageProvide
         } else {
           const totalList = state?.cars?.map((car: ICarItem) => {
             const found = updatedCars?.find((_) => _?.id === car?.id);
-            console.log('found>>>>>', found);
 
             return found || car;
           });
@@ -70,7 +69,7 @@ export function GarageStateProvider({ children, defaultSettings }: GarageProvide
               {},
               { params: { id: car.id, status: 'drive' } },
             );
-            console.log('response manageEngine started', driveRes);
+
             return driveRes;
           });
 
@@ -95,12 +94,48 @@ export function GarageStateProvider({ children, defaultSettings }: GarageProvide
 
           if (state?.cars?.length === updatedCarsMode?.length) {
             update('cars', updatedCarsMode);
+
+            let winner: null | ICarItem = null;
+            updatedCarsMode.forEach((car) => {
+              if (!winner) { winner = { ...car } };
+
+              if (car.velocity > (winner?.velocity ?? 0) && car?.drive) {
+                winner = { ...car }
+              };
+            });
+
+
+            if (winner) {
+              let res = createWinner(winner);
+              update('winner', winner);
+              console.log('createWinner1', res);
+
+            }
+
           } else {
-            const totalList = state?.cars?.map((car: ICarItem) => {
+            const totalList: ICarItem[] = state?.cars?.map((car: ICarItem) => {
               const found = updatedCarsMode?.find((_) => _?.id === car?.id);
               return found || car;
             });
             update('cars', totalList);
+
+
+            let winner: null | ICarItem = null;
+            totalList.forEach((car) => {
+              if (!winner) { winner = { ...car } };
+
+              if ((car?.velocity ?? 0) > (winner?.velocity ?? 0) && car?.drive) {
+                winner = { ...car }
+              };
+            });
+
+
+            if (winner) {
+              let res = createWinner(winner);
+              update('winner', winner);
+              console.log('createWinner2', res);
+            }
+
           }
         }
       } catch (error) {

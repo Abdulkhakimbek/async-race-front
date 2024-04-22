@@ -33,6 +33,15 @@ export const poster = async (args: string | [string, any]) => {
 
 // ----------------------------------------------------------------------
 
+export const updater = async (args: string | [string, any]) => {
+  const [url, data] = Array.isArray(args) ? args : [args];
+
+  const res = await axiosInstance.put(url, data);
+  return { data: res.data };
+};
+
+// ----------------------------------------------------------------------
+
 export const endpoints = {
   car: {
     list: '/garage',

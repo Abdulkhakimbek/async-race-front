@@ -13,6 +13,7 @@ export default function Garage() {
     carsEmpty: true,
     totalCount: 0,
     needToUpdate: false,
+    winner: null,
   };
 
   return (
