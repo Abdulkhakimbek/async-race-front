@@ -16,7 +16,7 @@ export const createWinner = async (data: IWinnerItem) => {
     const body = {
       id: data.id,
       wins: winner.wins + 1,
-      time: Math.min(data.time, winner.time === null ? data.time : winner.time),
+      time: Math.min(!data.time ? 10 : data.time, !winner.time ? 10 : winner.time),
     };
     const url = `${endpoints.winners.list}/${data.id}`;
     const resData = await axiosInstance.put(url, body);
