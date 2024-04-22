@@ -3,7 +3,6 @@ import {
 } from 'react';
 
 import { useLocalStorage } from 'src/hooks/use-local-storage';
-
 import { GarageValueProps } from 'src/types/garage';
 import { ICarItem } from 'src/types/car';
 import axiosInstance from 'src/utils/axios';
@@ -16,11 +15,11 @@ const STORAGE_KEY = 'garage';
 
 type GarageProviderProps = {
   children: React.ReactNode;
-  defaultSettings: GarageValueProps;
+  defaultValues: GarageValueProps;
 };
 
-export function GarageStateProvider({ children, defaultSettings }: GarageProviderProps) {
-  const { state, update, reset } = useLocalStorage(STORAGE_KEY, defaultSettings);
+export function GarageStateProvider({ children, defaultValues }: GarageProviderProps) {
+  const { state, update, reset } = useLocalStorage(STORAGE_KEY, defaultValues);
   const {
     currentPage, _limit, cars, totalCount, needToUpdate,
   } = state;
@@ -35,114 +34,58 @@ export function GarageStateProvider({ children, defaultSettings }: GarageProvide
   const manageEngine = useCallback(
     async (cars: ICarItem[], status: 'started' | 'stopped') => {
       try {
-        const enginePromises = cars.map(async (car) => {
-          const response = await axiosInstance.patch(
-            '/engine',
-            {},
-            { params: { id: car.id, status } },
-          );
-          return response;
-        });
+        const engineResponses = await Promise.all(
+          cars.map(car =>
+            axiosInstance.patch('/engine', {}, { params: { id: car.id, status } })
+          )
+        );
 
-        const engineResponses = await Promise.all(enginePromises);
+        const updatedCars = cars.map((car, index) => ({
+          ...car,
+          velocity: engineResponses[index].data.velocity,
+        }));
 
-        const updatedCars = cars.map((car, index) => {
-          const { velocity } = engineResponses[index].data;
-          return { ...car, velocity };
-        });
-
-        if (state?.cars?.length === updatedCars?.length) {
-          update('cars', updatedCars);
-        } else {
-          const totalList = state?.cars?.map((car: ICarItem) => {
-            const found = updatedCars?.find((_) => _?.id === car?.id);
-
-            return found || car;
-          });
+        const updateCarsState = (updatedCarsList: ICarItem[]) => {
+          const totalList = state?.cars?.map((car: ICarItem) => updatedCarsList.find(uCar => uCar.id === car.id) || car);
           update('cars', totalList);
-        }
+          return totalList;
+        };
+
+        const carsToUpdate = state?.cars?.length === updatedCars.length ? updateCarsState(updatedCars) : updateCarsState(updatedCars);
 
         if (status === 'started') {
-          const drivePromises = cars.map(async (car) => {
-            const driveRes = await axiosInstance.patch(
-              '/engine',
-              {},
-              { params: { id: car.id, status: 'drive' } },
-            );
+          const driveResponses = await Promise.allSettled(
+            cars.map(car =>
+              axiosInstance.patch('/engine', {}, { params: { id: car.id, status: 'drive' } })
+            )
+          );
 
-            return driveRes;
-          });
-
-          const driveResponses = await Promise.allSettled(drivePromises);
-
-          const updatedCarsMode = cars.map((car, index) => {
-            if (driveResponses[index].status === 'fulfilled') {
-              const { success: driveStatus } = (driveResponses[index] as PromiseFulfilledResult<AxiosResponse<any, any>>).value.data;
-              return {
-                ...car,
-                velocity: driveStatus ? updatedCars[index].velocity : 0,
-                drive: driveStatus,
-              };
-            }
-            console.error(`Failed to set drive mode for car ${car.id}:`, driveResponses[index]);
+          const updatedCarsMode = carsToUpdate.map((car: ICarItem, index: number) => {
+            const driveStatus = driveResponses[index].status === 'fulfilled' ? (driveResponses[index] as PromiseFulfilledResult<AxiosResponse<any, any>>).value.data.success : false;
             return {
               ...car,
-              velocity: 0.001,
-              drive: false,
+              velocity: driveStatus ? car.velocity : 0.001,
+              drive: driveStatus,
             };
           });
 
-          if (state?.cars?.length === updatedCarsMode?.length) {
-            update('cars', updatedCarsMode);
+          updateCarsState(updatedCarsMode);
 
-            let winner: null | ICarItem = null;
-            updatedCarsMode.forEach((car) => {
-              if (!winner) { winner = { ...car } };
-
-              if (car.velocity > (winner?.velocity ?? 0) && car?.drive) {
-                winner = { ...car }
-              };
-            });
-
-
-            if (winner) {
-              let res = createWinner(winner);
-              update('winner', winner);
-              console.log('createWinner1', res);
-
-            }
-
-          } else {
-            const totalList: ICarItem[] = state?.cars?.map((car: ICarItem) => {
-              const found = updatedCarsMode?.find((_) => _?.id === car?.id);
-              return found || car;
-            });
-            update('cars', totalList);
-
-
-            let winner: null | ICarItem = null;
-            totalList.forEach((car) => {
-              if (!winner) { winner = { ...car } };
-
-              if ((car?.velocity ?? 0) > (winner?.velocity ?? 0) && car?.drive) {
-                winner = { ...car }
-              };
-            });
-
-
-            if (winner) {
-              let res = createWinner(winner);
-              update('winner', winner);
-              console.log('createWinner2', res);
-            }
+          const winner = updatedCarsMode.reduce((acc: null | ICarItem, car: ICarItem) => (car.drive && ((car.velocity ?? 0) > (acc?.velocity ?? 0)) ? car : acc), null);
+          if (winner) {
+            const res = createWinner(winner);
+            res.then((res) => {
+              console.log('createWinner', res);
+              update('winner', { ...(res?.data ?? {}), ...winner });
+            })
 
           }
         }
       } catch (error) {
-        console.log('error at response1:', error);
+        console.error('Error at manageEngine:', error);
       }
     },
-    [cars, update],
+    [cars, update, state?.cars]
   );
 
   const nextPage = () => {

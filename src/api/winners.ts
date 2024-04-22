@@ -5,8 +5,6 @@ import axiosInstance, { fetcher, poster, updater, endpoints } from 'src/utils/ax
 
 import { IWinnerItem } from 'src/types/winners';
 
-// ----------------------------------------------------------------------
-
 export const createWinner = async (data: IWinnerItem) => {
   let res = await axiosInstance.get(`${endpoints.winners.list}?id=${data.id}`);
 
@@ -15,13 +13,13 @@ export const createWinner = async (data: IWinnerItem) => {
     data = {
       id: data.id,
       wins: winner.wins + 1,
-      time: Math.min(data.time, winner.time)
+      time: Math.min(data.time, winner.time === null ? data.time : winner.time),
     }
     const url = `${endpoints.winners.list}/${data.id}`;
     const resData = await axiosInstance.put(url, data);
     return resData;
   } else {
-    data = { id: data.id, wins: 1, time: data.time }
+    data = { id: data.id, wins: 1, time: 1000 / (data.velocity ?? 100) }
     const resData = await axiosInstance.post(endpoints.winners.list, data);
     return resData;
   }

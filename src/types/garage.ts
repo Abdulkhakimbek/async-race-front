@@ -1,13 +1,17 @@
 import { ICarItem } from './car';
 import { IWinnerItem } from './winners';
 
+export type NewCarItem = {
+  name: string;
+  color: string;
+}
+
 export type GarageValueProps = {
   currentPage: number;
   cars: ICarItem[];
-  carsLoading: boolean;
-  carsEmpty: boolean;
   totalCount: number;
   selectedCar: ICarItem | null;
+  newCar: NewCarItem;
   _limit: number;
   needToUpdate: boolean;
   winner: IWinnerItem | null;

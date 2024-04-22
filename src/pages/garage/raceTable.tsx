@@ -81,7 +81,7 @@ export default function RaceTable() {
           {winner && <Stack>
             <GradientText variant="p">{`${winner.name}`}</GradientText>
             <Typography>{`Wins: ${winner.wins}`}</Typography>
-            <Typography>{`Time: ${winner.time}`}</Typography>
+            <Typography>{`Time: ${winner.time?.toFixed(2)}`}</Typography>
           </Stack>}
         </Box>
       </Modal>

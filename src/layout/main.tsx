@@ -1,8 +1,7 @@
 import Box from '@mui/material/Box';
 import { Stack } from '@mui/material';
-import Header from './head';
 
-// ----------------------------------------------------------------------
+import Header from './head';
 
 type Props = {
   children: React.ReactNode;
@@ -12,7 +11,7 @@ export default function MainLayout({ children }: Props) {
   return (
     <Box
       sx={{
-        padding: '2% 5% 4% 5%',
+        padding: '4% 5%',
       }}
     >
       <Stack
@@ -21,7 +20,6 @@ export default function MainLayout({ children }: Props) {
         gap="40px"
         sx={{
           flexGrow: 1,
-          // border: '1px solid white',
         }}
       >
         <Header />

@@ -10,11 +10,8 @@ type Props = {
 };
 
 export default function CreateAndUpdateCar({ action }: Props) {
-  const [car, setCar] = useState({
-    name: '',
-    color: '#ffffff',
-  });
-  const { onCreateCar, onUpdateCar, selectedCar } = useGarageContext();
+  const { onCreateCar, onUpdateCar, selectedCar, update, newCar } = useGarageContext();
+  const [car, setCar] = useState({ ...newCar });
   const isUpdate = action === 'UPDATE';
 
   const handleCreateAndUpdate = async () => {
@@ -34,7 +31,16 @@ export default function CreateAndUpdateCar({ action }: Props) {
         color: '#ffffff',
       });
     }
+
+
   }, [selectedCar, isUpdate]);
+
+  useEffect(() => {
+    if (!isUpdate) {
+      update('newCar', car);
+    }
+  }, [car]);
+
 
   return (
     <Stack direction="row" spacing={2} alignItems="center">

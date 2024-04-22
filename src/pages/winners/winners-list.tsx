@@ -12,6 +12,7 @@ import { styled } from '@mui/material/styles';
 import { useGetWinners } from 'src/api/winners';
 import { IconButton, Stack, Typography } from '@mui/material';
 import Iconify from 'src/components/iconify';
+import { useWinnersContext } from './context';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -32,12 +33,10 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export default function WinnersList() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const _limit = 7; // later can be made dynamic
-
+  const { wCurrentPage, _limit, prevPage, nextPage } = useWinnersContext();
   const {
     winners, winnersLoading, winnersEmpty, totalCount,
-  } = useGetWinners(currentPage, _limit);
+  } = useGetWinners(wCurrentPage, _limit);
 
   return (
     <Stack direction="column">
@@ -47,7 +46,7 @@ export default function WinnersList() {
             <TableRow>
               <StyledTableCell align="left">No</StyledTableCell>
               <StyledTableCell align="left">CAR</StyledTableCell>
-              <StyledTableCell align="left">NAME</StyledTableCell>
+              {/* <StyledTableCell align="left">NAME</StyledTableCell> */}
               <StyledTableCell align="left">WINS</StyledTableCell>
               <StyledTableCell align="left">BEST TIME (SECONDS)</StyledTableCell>
             </TableRow>
@@ -56,7 +55,7 @@ export default function WinnersList() {
             {winners.map((row, index) => (
               <StyledTableRow key={row.id}>
                 <StyledTableCell align="left" component="th" scope="row">
-                  {index + 1 + (currentPage - 1) * 7}
+                  {index + 1 + (wCurrentPage - 1) * 7}
                 </StyledTableCell>
                 <StyledTableCell align="left">
                   <Iconify
@@ -68,8 +67,8 @@ export default function WinnersList() {
                   />
                 </StyledTableCell>
                 <StyledTableCell align="left">{row.wins}</StyledTableCell>
-                <StyledTableCell align="left">{row.wins}</StyledTableCell>
-                <StyledTableCell align="left">{row.wins}</StyledTableCell>
+                <StyledTableCell align="left">{row.time?.toFixed(2)}</StyledTableCell>
+                {/* <StyledTableCell align="left">{row.wins}</StyledTableCell> */}
               </StyledTableRow>
             ))}
           </TableBody>
@@ -83,19 +82,21 @@ export default function WinnersList() {
       >
         <Typography>{`TOTAL (${totalCount})`}</Typography>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <IconButton disabled={currentPage < 2}>
+          <IconButton disabled={wCurrentPage < 2}>
             <Iconify
               icon="fluent:previous-32-regular"
               width={24}
-              color={currentPage < 2 ? 'grey' : 'white'}
+              color={wCurrentPage < 2 ? 'grey' : 'white'}
+              onClick={prevPage}
             />
           </IconButton>
-          <Typography>{`PAGE #${currentPage}`}</Typography>
-          <IconButton disabled={totalCount < currentPage * _limit}>
+          <Typography>{`PAGE #${wCurrentPage}`}</Typography>
+          <IconButton disabled={totalCount < wCurrentPage * _limit}>
             <Iconify
               icon="fluent:next-32-regular"
               width={24}
-              color={totalCount < currentPage * _limit ? 'grey' : 'white'}
+              color={totalCount < wCurrentPage * _limit ? 'grey' : 'white'}
+              onClick={nextPage}
             />
           </IconButton>
         </Stack>

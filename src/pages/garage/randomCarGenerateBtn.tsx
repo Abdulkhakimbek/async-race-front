@@ -23,7 +23,7 @@ const generateRandomColor = () => {
 
 export default function RandomCarGenerator() {
   const [loading, setLoading] = useState<boolean>(false);
-  const { update } = useGarageContext();
+  const { update, needToUpdate } = useGarageContext();
 
   const handleGenerateRandomCars = async () => {
     setLoading(true);
@@ -43,7 +43,7 @@ export default function RandomCarGenerator() {
       console.error('Error generating cars:', error);
     } finally {
       setLoading(false);
-      update('needToUpdate', true);
+      update('needToUpdate', !needToUpdate);
     }
   };
 
