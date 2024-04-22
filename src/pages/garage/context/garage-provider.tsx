@@ -21,7 +21,7 @@ type GarageProviderProps = {
 export function GarageStateProvider({ children, defaultValues }: GarageProviderProps) {
   const { state, update, reset } = useLocalStorage(STORAGE_KEY, defaultValues);
   const {
-    currentPage, _limit, cars, totalCount, needToUpdate,
+    currentPage, _limit, cars, needToUpdate,
   } = state;
   const { enqueueSnackbar } = useSnackbar();
 
@@ -104,7 +104,7 @@ export function GarageStateProvider({ children, defaultValues }: GarageProviderP
       enqueueSnackbar(response?.statusText || 'Car not created', { variant: 'error' });
     }
     reset();
-    update('needToUpdate', true);
+    update('needToUpdate', !needToUpdate);
   }, []);
 
   const onSelectCar = useCallback((car: ICarItem) => {
@@ -122,7 +122,7 @@ export function GarageStateProvider({ children, defaultValues }: GarageProviderP
       enqueueSnackbar(response?.statusText || 'Car not updated', { variant: 'error' });
     }
     reset();
-    update('needToUpdate', true);
+    update('needToUpdate', !needToUpdate);
   }, []);
 
   const onDeleteCar = useCallback(async (id: string | number) => {
@@ -136,7 +136,7 @@ export function GarageStateProvider({ children, defaultValues }: GarageProviderP
       enqueueSnackbar(response?.statusText || 'Car not deleted', { variant: 'error' });
     }
     reset();
-    update('needToUpdate', true);
+    update('needToUpdate', !needToUpdate);
   }, []);
 
   useEffect(() => {
