@@ -16,27 +16,16 @@ export default function TrackAction({ car }: Props) {
   const mdUp = useResponsive('up', 'md');
 
   return (
-    <Stack 
-    direction={mdUp ? "row" :'column'}
-    spacing={1}
-    >
-      <Stack direction={"column"} spacing={1}>
-        <Button 
-        variant="outlined"
-         color="info" 
-         onClick={() => onSelectCar(car)}
-         >
-           {mdUp ?'SELECT' : <Iconify icon="mdi:edit" />}
+    <Stack direction={mdUp ? 'row' : 'column'} spacing={1}>
+      <Stack direction={'column'} spacing={1}>
+        <Button variant="outlined" color="info" onClick={() => onSelectCar(car)}>
+          {mdUp ? 'SELECT' : <Iconify icon="mdi:edit" />}
         </Button>
-        <Button
-          variant="outlined"
-          color="warning"
-          onClick={() => car?.id && onDeleteCar(car?.id)}
-        >
-        {mdUp ? 'REMOVE' : <Iconify icon="mdi:delete" />}
+        <Button variant="outlined" color="warning" onClick={() => car?.id && onDeleteCar(car?.id)}>
+          {mdUp ? 'REMOVE' : <Iconify icon="mdi:delete" />}
         </Button>
       </Stack>
-      <Stack direction={"column"} spacing={1}>
+      <Stack direction={'column'} spacing={1}>
         <Button
           variant="outlined"
           color="info"

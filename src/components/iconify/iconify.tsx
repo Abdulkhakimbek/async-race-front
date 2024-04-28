@@ -11,9 +11,7 @@ interface Props extends BoxProps {
   icon: IconifyProps;
 }
 
-const Iconify = forwardRef<SVGElement, Props>(({
-  icon, width = 20, sx, ...other
-}, ref) => (
+const Iconify = forwardRef<SVGElement, Props>(({ icon, width = 20, sx, ...other }, ref) => (
   <Box
     ref={ref}
     component={Icon}

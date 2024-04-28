@@ -1,10 +1,7 @@
 import useSWR from 'swr';
 import { useMemo } from 'react';
 
-import axiosInstance, {
-  fetcher,
-  endpoints,
-} from 'src/utils/axios';
+import axiosInstance, { fetcher, endpoints } from 'src/utils/axios';
 
 import { IWinnerItem } from 'src/types/winners';
 
@@ -27,12 +24,12 @@ export const createWinner = async (data: IWinnerItem) => {
       id: data.id,
       name: data.name,
       wins: 1,
-      time: 1000 / (data.velocity ?? 100)
+      time: 1000 / (data.velocity ?? 100),
     };
     const resData = await axiosInstance.post(endpoints.winners.list, body);
     return resData;
   }
-}
+};
 
 // ----------------------------------------------------------------------
 
@@ -41,9 +38,7 @@ export function useGetWinners(_page: number, _limit: number) {
     ? [endpoints.winners.list, { params: { _page, _limit } }]
     : endpoints.winners.list;
 
-  const {
-    data, isLoading, error, isValidating
-  } = useSWR(URL, fetcher);
+  const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
 
   const memoizedValue = useMemo(
     () => ({
@@ -54,7 +49,7 @@ export function useGetWinners(_page: number, _limit: number) {
       winnersEmpty: !isLoading && !data?.data?.length,
       totalCount: data?.totalCount,
     }),
-    [data?.data, error, isLoading, isValidating],
+    [data?.data, error, isLoading, isValidating]
   );
 
   return memoizedValue;
@@ -65,9 +60,7 @@ export function useGetWinners(_page: number, _limit: number) {
 export function useGetWinner(id: string | number) {
   const URL = id ? [endpoints.winners.details, { params: { id } }] : '';
 
-  const {
-    data, isLoading, error, isValidating,
-  } = useSWR(URL, fetcher);
+  const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
 
   const memoizedValue = useMemo(
     () => ({
@@ -76,7 +69,7 @@ export function useGetWinner(id: string | number) {
       winnerError: error,
       winnerValidating: isValidating,
     }),
-    [data?.data, error, isLoading, isValidating],
+    [data?.data, error, isLoading, isValidating]
   );
 
   return memoizedValue;

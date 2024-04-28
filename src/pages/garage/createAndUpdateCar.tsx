@@ -31,8 +31,6 @@ export default function CreateAndUpdateCar({ action }: Props) {
         color: '#ffffff',
       });
     }
-
-
   }, [selectedCar, isUpdate]);
 
   useEffect(() => {
@@ -40,7 +38,6 @@ export default function CreateAndUpdateCar({ action }: Props) {
       update('newCar', car);
     }
   }, [car]);
-
 
   return (
     <Stack direction="row" spacing={2} alignItems="center">

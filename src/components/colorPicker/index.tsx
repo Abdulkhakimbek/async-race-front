@@ -43,11 +43,11 @@ export default function ColorPicker({ setCar, car }: Props) {
           }}
         >
           {active && (
-          <ChromePicker
-            color={car?.color}
-            onChange={(e) => handleColor(e?.hex)}
-            onChangeComplete={(e) => handleColor(e?.hex)}
-          />
+            <ChromePicker
+              color={car?.color}
+              onChange={(e) => handleColor(e?.hex)}
+              onChangeComplete={(e) => handleColor(e?.hex)}
+            />
           )}
         </Box>
       </Box>

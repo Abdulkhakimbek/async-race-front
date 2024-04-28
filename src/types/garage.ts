@@ -4,7 +4,7 @@ import { IWinnerItem } from './winners';
 export type NewCarItem = {
   name: string;
   color: string;
-}
+};
 
 export type GarageValueProps = {
   currentPage: number;

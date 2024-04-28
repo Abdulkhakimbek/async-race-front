@@ -14,7 +14,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  maxWidth:{md: 450, xs: 300},
+  maxWidth: { md: 450, xs: 300 },
   bgcolor: 'background.paper',
   border: '1px solid #FFF',
   borderRadius: '8px',
@@ -24,18 +24,14 @@ const style = {
 
 export default function RaceTable() {
   const [open, setOpen] = useState(false);
-  const {
-    nextPage,
-    prevPage,
-    currentPage,
-    _limit, cars,
-    totalCount,
-    winner,
-    update
-  } = useGarageContext();
+  const { nextPage, prevPage, currentPage, _limit, cars, totalCount, winner, update } =
+    useGarageContext();
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => { setOpen(false); update('winner', null) };
+  const handleClose = () => {
+    setOpen(false);
+    update('winner', null);
+  };
 
   useEffect(() => {
     if (winner !== null) {
@@ -78,11 +74,13 @@ export default function RaceTable() {
       >
         <Box sx={style}>
           <GradientText variant="h5">WINNER!!!</GradientText>
-          {winner && <Stack>
-            <GradientText variant="p">{`${winner.name}`}</GradientText>
-            <Typography>{`Wins: ${winner.wins}`}</Typography>
-            <Typography>{`Time: ${winner.time?.toFixed(2)}`}</Typography>
-          </Stack>}
+          {winner && (
+            <Stack>
+              <GradientText variant="p">{`${winner.name}`}</GradientText>
+              <Typography>{`Wins: ${winner.wins}`}</Typography>
+              <Typography>{`Time: ${winner.time?.toFixed(2)}`}</Typography>
+            </Stack>
+          )}
         </Box>
       </Modal>
     </>

@@ -4,12 +4,12 @@ import GradientText from 'src/components/gradientText';
 
 export default function HeadingText() {
   return (
-    <Stack 
-    direction="row" 
-    spacing="auto"
-    sx={{
-      mt: { xs: 5, md: 0 },
-    }}
+    <Stack
+      direction="row"
+      spacing="auto"
+      sx={{
+        mt: { xs: 5, md: 0 },
+      }}
     >
       <Box display="flex" justifyContent="center" alignItems="flex-end">
         <ArrowLine width="75%" />

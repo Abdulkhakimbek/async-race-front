@@ -1,4 +1,4 @@
-import {  Stack, Button } from '@mui/material';
+import { Stack, Button } from '@mui/material';
 import Iconify from 'src/components/iconify';
 import CreateAndUpdateCar from './createAndUpdateCar';
 import RandomCarGenerator from './randomCarGenerateBtn';
@@ -19,10 +19,10 @@ export default function GarageActionPanel() {
   const mdUp = useResponsive('up', 'md');
 
   return (
-    <Stack 
-    direction={mdUp ? "row" : 'column'} 
-    justifyContent={ mdUp ? "space-between" : 'flex-start'}
-    spacing={mdUp ? 'auto' : 2}
+    <Stack
+      direction={mdUp ? 'row' : 'column'}
+      justifyContent={mdUp ? 'space-between' : 'flex-start'}
+      spacing={mdUp ? 'auto' : 2}
     >
       <Stack direction="row" spacing={1}>
         <Button
@@ -30,7 +30,6 @@ export default function GarageActionPanel() {
           color="success"
           endIcon={<Iconify icon="uil:play" />}
           onClick={startRace}
-        
         >
           Race
         </Button>
@@ -49,7 +48,7 @@ export default function GarageActionPanel() {
       <CreateAndUpdateCar action="CREATE" />
       <CreateAndUpdateCar action="UPDATE" />
 
-     {mdUp && <RandomCarGenerator />}
+      {mdUp && <RandomCarGenerator />}
     </Stack>
   );
 }

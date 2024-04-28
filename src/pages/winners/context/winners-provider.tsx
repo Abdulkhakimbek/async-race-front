@@ -13,9 +13,7 @@ type WinnersProviderProps = {
 
 export function WinnersStateProvider({ children, defaultValues }: WinnersProviderProps) {
   const { state, update, reset } = useLocalStorage(STORAGE_KEY, defaultValues);
-  const {
-    wCurrentPage,
-  } = state;
+  const { wCurrentPage } = state;
 
   const nextPage = () => {
     update('wCurrentPage', wCurrentPage + 1);
@@ -33,7 +31,7 @@ export function WinnersStateProvider({ children, defaultValues }: WinnersProvide
       nextPage,
       prevPage,
     }),
-    [reset, update, state, nextPage, prevPage],
+    [reset, update, state, nextPage, prevPage]
   );
 
   return <WinnersContext.Provider value={memoizedValue}>{children}</WinnersContext.Provider>;

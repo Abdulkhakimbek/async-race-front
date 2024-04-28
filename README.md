@@ -8,8 +8,6 @@
 
 - ✅ **Deployment Platform: Netlify**
 
-
-
 ## Checklist
 
 ### 1. View Configuration (30 points)

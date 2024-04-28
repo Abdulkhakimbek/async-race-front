@@ -6,7 +6,7 @@ import TrackAction from './track-action-panel';
 import { useResponsive } from 'src/hooks/use-responsive';
 
 type Props = {
-    car: ICarItem;
+  car: ICarItem;
 };
 
 export default function Track({ car }: Props) {
@@ -54,8 +54,8 @@ export default function Track({ car }: Props) {
         sx={{
           position: 'absolute',
           width: '100%',
-          left: {md:moveCar ? '95%' : '12%', xs: moveCar ? '95%' : '16%',} ,
-          top: {md: '15%', xs: '30%'},
+          left: { md: moveCar ? '95%' : '12%', xs: moveCar ? '95%' : '16%' },
+          top: { md: '15%', xs: '30%' },
           zIndex: '10',
           transition: `left ${animationDuration} linear`,
         }}
@@ -73,7 +73,7 @@ export default function Track({ car }: Props) {
       <Box
         sx={{
           position: 'absolute',
-          left: {md: '17%', xs: '36%'},
+          left: { md: '17%', xs: '36%' },
           top: '0%',
           zIndex: '1',
           borderLeft: '2px dashed #ed6c02', // start line

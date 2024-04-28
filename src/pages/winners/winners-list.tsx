@@ -34,9 +34,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function WinnersList() {
   const { wCurrentPage, _limit, prevPage, nextPage } = useWinnersContext();
-  const {
-    winners, winnersLoading, winnersEmpty, totalCount,
-  } = useGetWinners(wCurrentPage, _limit);
+  const { winners, winnersLoading, winnersEmpty, totalCount } = useGetWinners(wCurrentPage, _limit);
 
   return (
     <Stack direction="column">
@@ -74,12 +72,7 @@ export default function WinnersList() {
           </TableBody>
         </Table>
       </TableContainer>
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        color="white"
-      >
+      <Stack direction="row" alignItems="center" justifyContent="space-between" color="white">
         <Typography>{`TOTAL (${totalCount})`}</Typography>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <IconButton disabled={wCurrentPage < 2}>

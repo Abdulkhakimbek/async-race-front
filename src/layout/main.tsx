@@ -12,7 +12,7 @@ export default function MainLayout({ children }: Props) {
     <Box
       sx={{
         padding: '4% 5%',
-        height: {md:'100vh', xs: 'auto'},
+        height: { md: '100vh', xs: 'auto' },
         width: '100vw',
       }}
     >

@@ -9,12 +9,12 @@ export default function TrackBorder({ children }: Props) {
   return (
     <>
       <ArrowLine width="100%" hasBorder />
-      <Stack 
-      direction="column" 
-      padding="0px 0px" 
-      // minWidth="1350px" 
-      overflow="hidden"
-      width="100%"
+      <Stack
+        direction="column"
+        padding="0px 0px"
+        // minWidth="1350px"
+        overflow="hidden"
+        width="100%"
       >
         {children}
       </Stack>

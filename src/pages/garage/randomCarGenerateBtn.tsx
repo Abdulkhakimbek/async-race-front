@@ -36,7 +36,7 @@ export default function RandomCarGenerator() {
         };
         const response: AxiosResponse<any, ICarItem> = await axiosInstance.post(
           '/garage',
-          randomCar,
+          randomCar
         );
       }
     } catch (error) {

@@ -12,7 +12,7 @@ type Props = {
 export default function GradientText({ children, variant }: Props) {
   const StyledTextGradient = styled(m[variant] || m.h1)(({ theme }) => ({
     ...textGradient(
-      `300deg, ${theme.palette.primary.main} 0%, ${theme.palette.warning.main} 25%, ${theme.palette.primary.main} 50%, ${theme.palette.warning.main} 75%, ${theme.palette.primary.main} 100%`,
+      `300deg, ${theme.palette.primary.main} 0%, ${theme.palette.warning.main} 25%, ${theme.palette.primary.main} 50%, ${theme.palette.warning.main} 75%, ${theme.palette.primary.main} 100%`
     ),
     padding: 0,
     marginTop: 8,

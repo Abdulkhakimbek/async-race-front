@@ -1,6 +1,4 @@
-import {
-  useMemo, useEffect, useCallback,
-} from 'react';
+import { useMemo, useEffect, useCallback } from 'react';
 
 import { useLocalStorage } from 'src/hooks/use-local-storage';
 import { GarageValueProps } from 'src/types/garage';
@@ -20,13 +18,7 @@ type GarageProviderProps = {
 
 export function GarageStateProvider({ children, defaultValues }: GarageProviderProps) {
   const { state, update, reset } = useLocalStorage(STORAGE_KEY, defaultValues);
-  const {
-    currentPage,
-    _limit,
-    cars,
-    needToUpdate,
-    totalCount,
-  } = state;
+  const { currentPage, _limit, cars, needToUpdate, totalCount } = state;
   const { enqueueSnackbar } = useSnackbar();
 
   const getCars = useCallback(async () => {
@@ -39,9 +31,7 @@ export function GarageStateProvider({ children, defaultValues }: GarageProviderP
     async (cars: ICarItem[], status: 'started' | 'stopped') => {
       try {
         const engineResponses = await Promise.all(
-          cars.map(car =>
-            axiosInstance.patch('/engine', {}, { params: { id: car.id, status } })
-          )
+          cars.map((car) => axiosInstance.patch('/engine', {}, { params: { id: car.id, status } }))
         );
 
         const updatedCars = cars.map((car, index) => ({
@@ -50,22 +40,31 @@ export function GarageStateProvider({ children, defaultValues }: GarageProviderP
         }));
 
         const updateCarsState = (updatedCarsList: ICarItem[]) => {
-          const totalList = state?.cars?.map((car: ICarItem) => updatedCarsList.find(uCar => uCar.id === car.id) || car);
+          const totalList = state?.cars?.map(
+            (car: ICarItem) => updatedCarsList.find((uCar) => uCar.id === car.id) || car
+          );
           update('cars', totalList);
           return totalList;
         };
 
-        const carsToUpdate = state?.cars?.length === updatedCars.length ? updateCarsState(updatedCars) : updateCarsState(updatedCars);
+        const carsToUpdate =
+          state?.cars?.length === updatedCars.length
+            ? updateCarsState(updatedCars)
+            : updateCarsState(updatedCars);
 
         if (status === 'started') {
           const driveResponses = await Promise.allSettled(
-            cars.map(car =>
+            cars.map((car) =>
               axiosInstance.patch('/engine', {}, { params: { id: car.id, status: 'drive' } })
             )
           );
 
           const updatedCarsMode = carsToUpdate.map((car: ICarItem, index: number) => {
-            const driveStatus = driveResponses[index].status === 'fulfilled' ? (driveResponses[index] as PromiseFulfilledResult<AxiosResponse<any, any>>).value.data.success : false;
+            const driveStatus =
+              driveResponses[index].status === 'fulfilled'
+                ? (driveResponses[index] as PromiseFulfilledResult<AxiosResponse<any, any>>).value
+                    .data.success
+                : false;
             return {
               ...car,
               velocity: driveStatus ? car.velocity : 0.001,
@@ -75,14 +74,17 @@ export function GarageStateProvider({ children, defaultValues }: GarageProviderP
 
           updateCarsState(updatedCarsMode);
 
-          const winner = updatedCarsMode.reduce((acc: null | ICarItem, car: ICarItem) => (car.drive && ((car.velocity ?? 0) > (acc?.velocity ?? 0)) ? car : acc), null);
+          const winner = updatedCarsMode.reduce(
+            (acc: null | ICarItem, car: ICarItem) =>
+              car.drive && (car.velocity ?? 0) > (acc?.velocity ?? 0) ? car : acc,
+            null
+          );
           if (winner) {
             const res = createWinner(winner);
             res.then((res) => {
               console.log('createWinner', res);
               update('winner', { ...(res?.data ?? {}), ...winner });
-            })
-
+            });
           }
         }
       } catch (error) {
@@ -100,48 +102,57 @@ export function GarageStateProvider({ children, defaultValues }: GarageProviderP
     update('currentPage', currentPage - 1);
   };
 
-  const onCreateCar = useCallback(async (car: ICarItem) => {
-    const response: AxiosResponse<any, ICarItem> = await axiosInstance.post('/garage', car);
-    if (response?.status >= 200 && response?.status < 300) {
-      enqueueSnackbar(response?.statusText || 'Car created successfully', { variant: 'success' });
-    } else {
-      enqueueSnackbar(response?.statusText || 'Car not created', { variant: 'error' });
-    }
-    console.log('totalCount', totalCount, _limit, Math.ceil(totalCount / _limit ?? 1));
+  const onCreateCar = useCallback(
+    async (car: ICarItem) => {
+      const response: AxiosResponse<any, ICarItem> = await axiosInstance.post('/garage', car);
+      if (response?.status >= 200 && response?.status < 300) {
+        enqueueSnackbar(response?.statusText || 'Car created successfully', { variant: 'success' });
+      } else {
+        enqueueSnackbar(response?.statusText || 'Car not created', { variant: 'error' });
+      }
+      console.log('totalCount', totalCount, _limit, Math.ceil(totalCount / _limit ?? 1));
 
-    update('currentPage', Math.ceil((Number(totalCount) + 1) / _limit ?? 1));
-    update('needToUpdate', !needToUpdate);
-  }, [totalCount, _limit, currentPage, needToUpdate]);
+      update('currentPage', Math.ceil((Number(totalCount) + 1) / _limit ?? 1));
+      update('needToUpdate', !needToUpdate);
+    },
+    [totalCount, _limit, currentPage, needToUpdate]
+  );
 
   const onSelectCar = useCallback((car: ICarItem) => {
     update('selectedCar', car);
   }, []);
 
-  const onUpdateCar = useCallback(async (car: ICarItem) => {
-    const response: AxiosResponse<any, ICarItem> = await axiosInstance.put(
-      `/garage/${car?.id}`,
-      car,
-    );
-    if (response?.status >= 200 && response?.status < 300) {
-      enqueueSnackbar(response?.statusText || 'Car updated successfully', { variant: 'success' });
-    } else {
-      enqueueSnackbar(response?.statusText || 'Car not updated', { variant: 'error' });
-    }
-    update('needToUpdate', !needToUpdate);
-  }, [needToUpdate]);
+  const onUpdateCar = useCallback(
+    async (car: ICarItem) => {
+      const response: AxiosResponse<any, ICarItem> = await axiosInstance.put(
+        `/garage/${car?.id}`,
+        car
+      );
+      if (response?.status >= 200 && response?.status < 300) {
+        enqueueSnackbar(response?.statusText || 'Car updated successfully', { variant: 'success' });
+      } else {
+        enqueueSnackbar(response?.statusText || 'Car not updated', { variant: 'error' });
+      }
+      update('needToUpdate', !needToUpdate);
+    },
+    [needToUpdate]
+  );
 
-  const onDeleteCar = useCallback(async (id: string | number) => {
-    const response: AxiosResponse<any, string | number> = await axiosInstance.delete(
-      `/garage/${id}`,
-    );
+  const onDeleteCar = useCallback(
+    async (id: string | number) => {
+      const response: AxiosResponse<any, string | number> = await axiosInstance.delete(
+        `/garage/${id}`
+      );
 
-    if (response?.status >= 200 && response?.status < 300) {
-      enqueueSnackbar(response?.statusText || 'Car deleted successfully', { variant: 'success' });
-    } else {
-      enqueueSnackbar(response?.statusText || 'Car not deleted', { variant: 'error' });
-    }
-    update('needToUpdate', !needToUpdate);
-  }, [needToUpdate]);
+      if (response?.status >= 200 && response?.status < 300) {
+        enqueueSnackbar(response?.statusText || 'Car deleted successfully', { variant: 'success' });
+      } else {
+        enqueueSnackbar(response?.statusText || 'Car not deleted', { variant: 'error' });
+      }
+      update('needToUpdate', !needToUpdate);
+    },
+    [needToUpdate]
+  );
 
   useEffect(() => {
     getCars();
@@ -160,7 +171,7 @@ export function GarageStateProvider({ children, defaultValues }: GarageProviderP
       prevPage,
       manageEngine,
     }),
-    [reset, update, state, onSelectCar, onUpdateCar, onCreateCar, onDeleteCar, manageEngine],
+    [reset, update, state, onSelectCar, onUpdateCar, onCreateCar, onDeleteCar, manageEngine]
   );
 
   return <GarageContext.Provider value={memoizedValue}>{children}</GarageContext.Provider>;
