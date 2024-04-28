@@ -14,7 +14,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 450,
+  maxWidth:{md: 450, xs: 300},
   bgcolor: 'background.paper',
   border: '1px solid #FFF',
   borderRadius: '8px',
@@ -77,7 +77,7 @@ export default function RaceTable() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <GradientText variant="h5">WINNER</GradientText>
+          <GradientText variant="h5">WINNER!!!</GradientText>
           {winner && <Stack>
             <GradientText variant="p">{`${winner.name}`}</GradientText>
             <Typography>{`Wins: ${winner.wins}`}</Typography>

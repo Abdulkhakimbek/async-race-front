@@ -4,14 +4,29 @@ import { Button } from '@mui/material';
 import { RouterLink } from 'src/routes/components';
 import HeadingText from './headingText';
 
-type Props = {
-  children: React.ReactNode;
-};
-
 export default function Header() {
+
   return (
-    <Stack direction="row" alignItems="center" spacing={3} height="30%">
-      <Stack direction="column" justifyContent="flex-start" spacing={4} maxWidth="140px">
+    <Stack 
+     direction="row"
+     alignItems="center" 
+     spacing={3} 
+     sx={{
+      height: { xs: '40%', md: '30%'},
+      flexDirection: { xs: 'column', md: 'row'},
+      alignItems: { xs: 'space-between', md: 'center'},
+     }}
+     >
+      <Box 
+      sx={{ 
+        display: 'flex',
+        justifyContent:{ xs: 'space-between', md: 'flex-start'},
+        alignItems: { xs: 'center', md: 'flex-start'},
+        flexDirection: { xs: 'row', md: 'column'},
+        mb: { xs: 5, md: 0 },
+        gap: {  md: '20px'},
+      }}
+      >
         <Button component={RouterLink} size="large" href="/garage" variant="outlined">
           Garage
         </Button>
@@ -24,7 +39,7 @@ export default function Header() {
         >
           Winners
         </Button>
-      </Stack>
+      </Box>
       <HeadingText />
     </Stack>
   );
