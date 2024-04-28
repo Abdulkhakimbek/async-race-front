@@ -82,7 +82,6 @@ export function GarageStateProvider({ children, defaultValues }: GarageProviderP
           if (winner) {
             const res = createWinner(winner);
             res.then((res) => {
-              console.log('createWinner', res);
               update('winner', { ...(res?.data ?? {}), ...winner });
             });
           }
@@ -110,7 +109,6 @@ export function GarageStateProvider({ children, defaultValues }: GarageProviderP
       } else {
         enqueueSnackbar(response?.statusText || 'Car not created', { variant: 'error' });
       }
-      console.log('totalCount', totalCount, _limit, Math.ceil(totalCount / _limit ?? 1));
 
       update('currentPage', Math.ceil((Number(totalCount) + 1) / _limit ?? 1));
       update('needToUpdate', !needToUpdate);

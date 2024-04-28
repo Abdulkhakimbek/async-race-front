@@ -3,7 +3,6 @@ import Iconify from 'src/components/iconify';
 import { ICarItem } from 'src/types/car';
 import { useEffect, useState, useRef } from 'react';
 import TrackAction from './track-action-panel';
-import { useResponsive } from 'src/hooks/use-responsive';
 
 type Props = {
   car: ICarItem;
@@ -13,17 +12,12 @@ export default function Track({ car }: Props) {
   const [moveCar, setMoveCar] = useState(false);
   const carRef = useRef<HTMLDivElement>(null);
 
-  const mdUp = useResponsive('up', 'md');
-
   let baseVelocity = car?.velocity || 0;
   const animationDuration = car?.velocity ? `${1000 / baseVelocity}s` : `${baseVelocity}s`;
 
   if ('drive' in car && car.drive === false) {
     baseVelocity = 0;
   }
-  useEffect(() => {
-    console.log('carRef>>>', carRef.current?.style.left, car);
-  }, [carRef?.current, car]);
 
   useEffect(() => {
     if (car?.velocity) {
@@ -54,7 +48,7 @@ export default function Track({ car }: Props) {
         sx={{
           position: 'absolute',
           width: '100%',
-          left: { md: moveCar ? '95%' : '12%', xs: moveCar ? '95%' : '16%' },
+          left: { md: moveCar ? '95%' : '12%', xs: moveCar ? '90%' : '16%' },
           top: { md: '15%', xs: '30%' },
           zIndex: '10',
           transition: `left ${animationDuration} linear`,
