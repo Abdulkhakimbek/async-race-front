@@ -12,6 +12,8 @@ export default function MainLayout({ children }: Props) {
     <Box
       sx={{
         padding: '4% 5%',
+        height: '100vh',
+        width: '100vw',
       }}
     >
       <Stack
